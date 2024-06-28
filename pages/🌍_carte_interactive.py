@@ -42,7 +42,7 @@ with st.sidebar:
         
     conditionsEclairages = sorted(LUM.values())   
     conditionsEclairages = add_all_option(conditionsEclairages)
-    conditionEclairageSelected = st.sidebar.selectbox(label="Luminosité", options = conditionsEclairages)
+    conditionEclairageSelected = st.sidebar.selectbox(label="Condition d'éclairage", options = conditionsEclairages)
     if conditionEclairageSelected != "Tous":
         inversedDico = dict(map(reversed, LUM.items()))
         localisationSelected = inversedDico[conditionEclairageSelected]
@@ -55,15 +55,7 @@ with st.sidebar:
         inversedDico = dict(map(reversed, AGG.items()))
         localisationSelected = inversedDico[localisationSelected]
         filteredCaracteristiques = filteredCaracteristiques[filteredCaracteristiques["agg"] == localisationSelected]
-
-    colisions = sorted(COLLISION.values())
-    colisions = add_all_option(colisions)
-    selectedColision = st.selectbox(label="Colision", options = colisions)
-    if selectedColision != "Tous":
-        inversedDico = dict(map(reversed, COLLISION.items()))
-        selectedColision = inversedDico[selectedColision]
-        filteredCaracteristiques = filteredCaracteristiques[filteredCaracteristiques["col"] == selectedColision]
-
+    
     categories = sorted(ROUTE_TYPE.values())
     categories = add_all_option(categories)
     selectedCategorieRoute = st.selectbox(label="Catégorie de route", options=categories)
@@ -73,7 +65,18 @@ with st.sidebar:
         filteredLieuxByCatr = dataLieux[dataLieux['catr'] == selectedCategorieRoute]
     else:
         filteredLieuxByCatr = dataLieux
+    
+    colisions = sorted(COLLISION.values())
+    colisions = add_all_option(colisions)
+    selectedColision = st.selectbox(label="Type de collision", options = colisions)
+    if selectedColision != "Tous":
+        inversedDico = dict(map(reversed, COLLISION.items()))
+        selectedColision = inversedDico[selectedColision]
+        filteredCaracteristiques = filteredCaracteristiques[filteredCaracteristiques["col"] == selectedColision]
 
+
+
+   
     dataJoinedAndFiltered = filteredCaracteristiques.join(filteredLieuxByCatr, how="inner")
         
 #Le nombre d'accidents.
